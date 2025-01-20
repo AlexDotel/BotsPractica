@@ -71,40 +71,18 @@ void OnTick(void){
       if(precioBajista() && rsiCompra()){
          double ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
          Print("Compramos");
-         
-         if(
-            !trade.Buy(
-               0.1,
-               _Symbol,
-               ask,
-               StopLossPoints    == 0 ? 0 : ask - StopLossPoints    * _Point,
-               TakeProfitPoints  == 0 ? 0 : ask + TakeProfitPoints  * _Point
-            )
-          ){
-            Print("No se pudo abrir la compra: ", GetLastError());
-          }
+         Compra(0.1, ask, StopLossPoints, TakeProfitPoints);
          
       }else if(precioAlcista() && rsiVenta()){
          double bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
          Print("Vendemos");
-         
-         if(
-            !trade.Sell(
-               0.1,
-               _Symbol,
-               bid,
-               StopLossPoints    == 0 ? 0 : bid + StopLossPoints    * _Point,
-               TakeProfitPoints  == 0 ? 0 : bid - TakeProfitPoints  * _Point
-            )
-          ){
-            Print("No se pudo abrir la venta: ", GetLastError());
-          }
-         
+         Venta(0.1, bid, StopLossPoints, TakeProfitPoints);
       }
    }
    
   }
 
+// === === === === === === === === === === MIS FUNCIONES === === === === === === === === === === === === //
 
 bool precioAlcista(){
    //Devuelve true si el precio esta encima de la ema 
@@ -133,8 +111,21 @@ void Compra(double _volume, double _ask, double _slPoints, double _tpPoints){
          _ask,
          _slPoints == 0 ? 0 : _ask - _slPoints * _Point,
          _tpPoints == 0 ? 0 : _ask + _tpPoints * _Point
-      )
-    ){
+      )){
       Print("No se pudo abrir la compra: ", GetLastError());
     }
+}
+
+void Venta(double _volume, double _bid, double _slPoints, double _tpPoints){
+   if(
+      !trade.Sell(
+         _volume,
+         _Symbol,
+         _bid,
+         _slPoints == 0 ? 0 : _bid + _slPoints * _Point,
+         _tpPoints == 0 ? 0 : _bid - _tpPoints * _Point
+      )){
+      Print("No se pudo abrir la venta: ", GetLastError());
+    }
+
 }
