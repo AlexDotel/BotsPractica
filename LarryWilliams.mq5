@@ -16,9 +16,13 @@ input int MinutoInicio = 30;  //Minutos inicio.
 input int MinutoFinal = 0;  //Minutos final.
 
 input group "Manejo de Riesgo"
-input int StopLossPoints = 500; //StopLoss en Puntos
-input int TakeProfitPoints = 500; //TakeProfit en Puntos
-input double PercentRisk = 1; 
+input int slPoints = 500; //StopLoss en Puntos
+input int tpPoints = 500; //TakeProfit en Puntos
+input double riskPercent = 1; //Porcentaje a Arriesgar
+
+input group "Direccion"
+bool input longSide  = true; //Habilitar Compras
+bool input shortSide = true; //Habilitar Ventas
 
 
 CTrade trade;
@@ -55,11 +59,9 @@ void OnDeinit(const int reason){
 }
 
 void OnTick(void){
-
-   double _slPoints = StopLossPoints   * _Point;
-   double _tpPoints = TakeProfitPoints * _Point;
-
-   double miLotaje = CalculateLotSize(PercentRisk, _slPoints);
+   
+   //Calculamos el lotaje automaticamente
+   double lotaje = CalculateLotSize(riskPercent, slPoints);
 
    //Si esta fuera del horario que se cierre.
    if (!EnHorario(HoraInicio, HoraFinal, MinutoInicio, MinutoFinal)) return;
@@ -69,19 +71,16 @@ void OnTick(void){
    CopyBuffer(rsi_h, 0, 1, 3, rsi);
    CopyRates(_Symbol, PERIOD_CURRENT, 1, 3, velas);
    
-   //double lotaje = calcular_riesgo(StopLossPoints, PercentRisk);
-   
-   
    if(FlatMarket()){
-      if(precioBajista() && rsiCompra()){
+      if(precioBajista() && rsiCompra() && longSide){
          double ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
          Print("Compramos");
-         Compra(0.1, ask, StopLossPoints, TakeProfitPoints);
+         Compra(lotaje, ask, slPoints, tpPoints);
          
-      }else if(precioAlcista() && rsiVenta()){
+      }else if(precioAlcista() && rsiVenta() && shortSide){
          double bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
          Print("Vendemos");
-         Venta(0.1, bid, StopLossPoints, TakeProfitPoints);
+         Venta(lotaje, bid, slPoints, tpPoints);
       }
    }
    
