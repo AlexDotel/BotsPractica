@@ -73,14 +73,14 @@ void OnTick(void){
    
    if(FlatMarket()){
       if(precioBajista() && rsiCompra() && longSide){
-         double ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
-         Print("Compramos");
-         Compra(lotaje, ask, slPoints, tpPoints);
-         
-      }else if(precioAlcista() && rsiVenta() && shortSide){
          double bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
          Print("Vendemos");
          Venta(lotaje, bid, slPoints, tpPoints);
+         
+      }else if(precioAlcista() && rsiVenta() && shortSide){
+         double ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
+         Print("Compramos");
+         Compra(lotaje, ask, slPoints, tpPoints);
       }
    }
    
