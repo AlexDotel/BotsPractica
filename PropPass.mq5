@@ -57,15 +57,20 @@ void OnTick(void){
 
    if(FlatMarket()){
       if(TendenciaAlcita() && SobreventaRSI()){
-         double ask = SymbolInfoDouble(_Symbol,SYMBOL_ASK);  
-         
+         double ask = SymbolInfoDouble(_Symbol,SYMBOL_ASK);
+         Compra(vol, ask, slPoints, tpPoints);  
       }
          
-      
-     }
+      if(TendenciaBajista() && SobrecompraRSI()){
+         double bid = SymbolInfoDouble(_Symbol,SYMBOL_BID);
+         Venta(vol, bid, slPoints, tpPoints);  
+      }         
+}
    
    
 }
+
+// === === === === === === FUNCIONES === === === === === === // 
 
 bool TendenciaAlcita(){
    double precioActual = velas[1].close;
