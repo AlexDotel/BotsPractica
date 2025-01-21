@@ -18,7 +18,7 @@ input int MinutoFinal = 0;  //Minutos final.
 input group "Manejo de Riesgo"
 input int StopLossPoints = 500; //StopLoss en Puntos
 input int TakeProfitPoints = 500; //TakeProfit en Puntos
-input double PercentRisk = 0.1; 
+input double PercentRisk = 1; 
 
 
 CTrade trade;
@@ -56,6 +56,11 @@ void OnDeinit(const int reason){
 
 void OnTick(void){
 
+   double _slPoints = StopLossPoints   * _Point;
+   double _tpPoints = TakeProfitPoints * _Point;
+
+   double miLotaje = CalculateLotSize(PercentRisk, _slPoints);
+
    //Si esta fuera del horario que se cierre.
    if (!EnHorario(HoraInicio, HoraFinal, MinutoInicio, MinutoFinal)) return;
    
@@ -64,7 +69,7 @@ void OnTick(void){
    CopyBuffer(rsi_h, 0, 1, 3, rsi);
    CopyRates(_Symbol, PERIOD_CURRENT, 1, 3, velas);
    
-   double lotaje = calcular_riesgo(StopLossPoints, PercentRisk);
+   //double lotaje = calcular_riesgo(StopLossPoints, PercentRisk);
    
    
    if(FlatMarket()){
