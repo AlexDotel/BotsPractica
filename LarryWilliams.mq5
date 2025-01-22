@@ -1,4 +1,4 @@
-   #include <SnippetsDotel.mqh>;
+   #include <MisSnippetsMQL5/SnippetsDotel.mqh>;
    #include <Trade/Trade.mqh>;
    
    input group "Parametros Indicadores."
@@ -71,17 +71,21 @@
       CopyBuffer(rsi_h, 0, 1, 3, rsi);
       CopyRates(_Symbol, PERIOD_CURRENT, 1, 3, velas);
       
+      //Verificamos que no hay ordenes.
       if(FlatMarket()){
+      
          //Condicion de Compra.
-         if(precioBajista(velas, ema) && rsiCompra(rsi, LwLevel) && longSide){
-            double bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
-            Print("Vendemos");
-            AbrirVenta(lotaje, bid, slPoints, tpPoints);
-         //Condicion de Venta.
-         }else if(precioAlcista(velas, ema) && rsiVenta(rsi, UpLevel) && shortSide){
+         if(precioAlcista(velas, ema) && rsiCompra(rsi, LwLevel) && longSide){
             double ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
             Print("Compramos");
             AbrirCompra(lotaje, ask, slPoints, tpPoints);
+         }
+         
+         //Condicion de Venta.
+         if(precioBajista(velas, ema) && rsiVenta(rsi, UpLevel) && shortSide){
+            double bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
+            Print("Vendemos");
+            AbrirVenta(lotaje, bid, slPoints, tpPoints);
          }
       }
       
