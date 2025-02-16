@@ -1,6 +1,5 @@
 
-#include  <SnippetsDotel.mqh>
-#include <Trade/Trade.mqh>
+#include <Dotlib/Dotlib.mqh>;
 
 input group "Indicadores"
 int input emaPeriod = 50;
@@ -21,8 +20,6 @@ int rsih;
 double ema [];
 double rsi [];
 MqlRates velas [];
-
-CTrade trade;
 
 
 int OnInit(void){

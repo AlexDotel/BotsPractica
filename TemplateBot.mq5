@@ -1,4 +1,5 @@
-   #include <SnippetsDotel.mqh>;
+   
+   #include <Dotlib/Dotlib.mqh>;
    #include <Trade/Trade.mqh>;
    
    input group "Parametros Horario (GMT)"
@@ -16,7 +17,6 @@
    bool input longSide  = true; //Habilitar Compras
    bool input shortSide = true; //Habilitar Ventas
    
-   CTrade trade;
 
    // int ema_h;
    // int rsi_h;
@@ -67,12 +67,12 @@
          if(longSide){ //Agregamos aqui la condicion de compra.
             double ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
             Print("Compramos");
-            AbrirCompra(lotaje, ask, slPoints, tpPoints);
+            AbrirCompra(lotaje, ask, slPoints, tpPoints, false, 0.1);
          //Condicion de Venta.
          }else if(shortSide){ //Agregamos aqui la condicion de venta.
             double bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
             Print("Vendemos");
-            AbrirVenta(lotaje, bid, slPoints, tpPoints);
+            AbrirVenta(lotaje, bid, slPoints, tpPoints, false, 0.1);
          }
       }
       
