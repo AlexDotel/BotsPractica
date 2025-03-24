@@ -1,5 +1,5 @@
 
-#include <Dotlib/Dotlib.mqh>;
+#include <C:\Users\joalr\OneDrive\Documentos\Dotlib\Dotlib.mqh>
 
 input group "Indicadores"
 int input emaPeriod = 50;

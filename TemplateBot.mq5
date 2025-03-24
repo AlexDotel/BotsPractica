@@ -1,6 +1,6 @@
    
-   #include <Dotlib/Dotlib.mqh>;
-   #include <Trade/Trade.mqh>;
+
+   #include <C:\Users\joalr\OneDrive\Documentos\Dotlib\Dotlib.mqh>
    
    input group "Parametros Horario (GMT)"
    input int HoraInicio = 9; //Hora Inicio
